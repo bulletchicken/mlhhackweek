@@ -5,12 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <!-- graph -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <title>Speech to Text</title>
   </head>
   <body>
-    
+
     <div class="container">
-      
       <p class="heading">Speech to Text</p>
       <h>kill switch</h>
       <label class="switch">
@@ -25,9 +26,9 @@
           <ion-icon name="mic-outline"></ion-icon>
           <img src="bars.svg" alt="" />
         </div>
-        <p>Start Listening</p>
+        <p id="mode">Start Listening</p>
       </button>
-      <p class="heading">Result :</p>
+      <p class="heading">Detected Speech:</p>
       <div
         class="result"
         spellcheck="false"
@@ -37,6 +38,11 @@
       </div>
     </div>
 
+
+
+    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+
+    
     <!-- IONICONS -->
     <script
       type="module"
@@ -48,5 +54,7 @@
 
     <!-- SCRIPT -->
     <script src="script.js"></script>
+
+
   </body>
 </html>

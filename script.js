@@ -5,6 +5,8 @@ const corsProxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 const openaiEndpointUrl = `${corsProxyUrl}${openaiEndpoint}`;
 
+const {google} = require('googleapis');
+
 
 const prompt = "your mama so fat";
 const maxTokens = 60;
@@ -13,9 +15,91 @@ const temperature = 0.7;
 const toggleBtn = document.getElementById('toggle-btn');
 const container = document.querySelector('.container');
 
+const conflit = ["suck", "idiot", "ugly", "useless", "weak", "shut", "asshole", "fucking"]
+const rising = ["not", "oh yeah", "shut", "what the hell is this", "are you kidding me?", "I can't believe"]
+let lastsaid = ""
+let lastsentence = ""
+
+let history = []
+let leadingevents = []
+let historyvalue = []
+let eventsvalue = []
+
+
+
+let mode = true;
+
 toggleBtn.addEventListener('click', function() {
-	container.classList.toggle('dark');
-	container.classList.toggle('light');
+  //document.querySelector('.body').classList.toggle('dark')
+  container.classList.toggle('dark');
+  if(mode){
+    document.getElementById('mode').innerHTML = "Roast Defender";
+    mode=false;
+  }else{
+    document.getElementById('mode').innerHTML = "Start Listening";
+    mode=true;
+  }
+  
+  
+	//container.classList.toggle('dark');
+	
+});
+
+
+API_KEY = "AIzaSyA5_QeqI3yVwHbLqQ7pm0keLRcH8uLfDG8";
+DISCOVERY_URL =
+    'https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1';
+
+  checkToxic()
+
+function checkToxic(){
+  google.discoverAPI(DISCOVERY_URL)
+    .then(client => {
+      const analyzeRequest = {
+    comment: {
+      text: "I hate you you are ugly",
+    },
+    requestedAttributes: {
+      TOXICITY: {},
+    },
+  };
+
+  client.comments.analyze(
+      {
+        key: API_KEY,
+        resource: analyzeRequest,
+      },
+      (err, response) => {
+        if (err) throw err;
+        console.log(JSON.stringify(response.data, null, 2));
+      });
+  })
+  .catch(err => {
+  throw err;
+  });
+}
+
+var xValues = [50,60,70,80,90,100,110,120,130,140,150];
+var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+
+new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 6, max:16}}],
+    }
+  }
 });
 /*
 const classificationParameters = {
@@ -66,15 +150,7 @@ let SpeechRecognition =
   recording = false;
 
 
-const conflit = ["suck", "idiot", "ugly", "useless", "weak", "shut", "asshole", "fucking"]
-const rising = ["not", "oh yeah", "shut", "what the hell is this", "are you kidding me?", "I can't believe"]
-let lastsaid = ""
-let lastsentence = ""
 
-let history = []
-let leadingevents = []
-let historyvalue = []
-let eventsvalue = []
 
 
 function agro(){
