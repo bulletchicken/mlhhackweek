@@ -4,10 +4,33 @@ const openaiApiKey = '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';
 const corsProxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 const openaiEndpointUrl = `${corsProxyUrl}${openaiEndpoint}`;
+/*
+const { fstat } = require('fs');
+const http = require('http')
+const port = 3000
 
-const {google} = require('googleapis');
 
+const server = http.createServer(function(req, res){
+  res.writeHead(200, {'Content-Type': 'text/html'})
+  fs.readFile('index.html', function(error, data) {
+    if(error){
+      res.writeHead(404)
+      res.write('Error: File not Found')
+    } else{
+      res.write(data)
+    }
+    res.end()
+  })
+})
 
+server.listen(port, function(error){
+  if(error){
+    console.log('error')
+  } else{
+    console.log(port)
+  }
+})
+*/
 const prompt = "your mama so fat";
 const maxTokens = 60;
 const temperature = 0.7;
@@ -15,7 +38,7 @@ const temperature = 0.7;
 const toggleBtn = document.getElementById('toggle-btn');
 const container = document.querySelector('.container');
 
-const conflit = ["suck", "idiot", "ugly", "useless", "weak", "shut", "asshole", "fucking"]
+const conflit = ["suck", "idiot", "ugly", "useless", "weak", "shut", "up", "asshole", "fucking"]
 const rising = ["not", "oh yeah", "shut", "what the hell is this", "are you kidding me?", "I can't believe"]
 let lastsaid = ""
 let lastsentence = ""
@@ -25,6 +48,7 @@ let leadingevents = []
 let historyvalue = []
 let eventsvalue = []
 
+let graphsize = 1;
 
 
 let mode = true;
@@ -46,43 +70,12 @@ toggleBtn.addEventListener('click', function() {
 });
 
 
-API_KEY = "AIzaSyA5_QeqI3yVwHbLqQ7pm0keLRcH8uLfDG8";
-DISCOVERY_URL =
-    'https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1';
 
-  checkToxic()
 
-function checkToxic(){
-  google.discoverAPI(DISCOVERY_URL)
-    .then(client => {
-      const analyzeRequest = {
-    comment: {
-      text: "I hate you you are ugly",
-    },
-    requestedAttributes: {
-      TOXICITY: {},
-    },
-  };
+var xValues = [0];
+var yValues = [""];
 
-  client.comments.analyze(
-      {
-        key: API_KEY,
-        resource: analyzeRequest,
-      },
-      (err, response) => {
-        if (err) throw err;
-        console.log(JSON.stringify(response.data, null, 2));
-      });
-  })
-  .catch(err => {
-  throw err;
-  });
-}
-
-var xValues = [50,60,70,80,90,100,110,120,130,140,150];
-var yValues = [7,8,8,9,9,9,10,11,14,14,15];
-
-new Chart("myChart", {
+const myChart = new Chart("myChart", {
   type: "line",
   data: {
     labels: xValues,
@@ -95,12 +88,25 @@ new Chart("myChart", {
     }]
   },
   options: {
-    legend: {display: false},
+    title:{
+      display:true,
+      text: "toxicity graph"
+    },
+    tooltips: {
+      enabled: true,
+      callbacks: {
+        title: function(context) {
+          return context;
+        }
+      }
+    },
+    legend: {display: true},
     scales: {
-      yAxes: [{ticks: {min: 6, max:16}}],
+      yAxes: [{ticks: {min: 0, max:10}}],
     }
   }
 });
+
 /*
 const classificationParameters = {
   model: 'text-davinci-002', // The GPT-3 model to use
@@ -150,34 +156,84 @@ let SpeechRecognition =
   recording = false;
 
 
-
+let ff = true;
 
 
 function agro(){
+  console.log(xValues);
+  ff=false;
+  lastsaid = lastsaid.toLowerCase()
+  lastsaid.replace(".", "")
+  lastsaid = lastsaid.split(".").join("")
+  console.log("The last sentence said" + lastsentence)
+  console.log(conflit.includes(lastsaid));
   if(conflit.includes(lastsaid)){
     history.push(lastsentence)
     const toxicity = Math.floor(Math.random() * 4) + 7;
     historyvalue.push(toxicity)
+    xValues.push(lastsentence)
+    graphsize++;
+    yValues.push(toxicity);
+    myChart.update();
+    console.log('hit');
+    ff=true;
   }
 
-  if(conflit.splice(-1)=="?"){
-    leadingevents.push(lastsentence)
+  else if(lastsaid.slice(-1)=="?"){
+    history.push(lastsentence)
     const toxicity = Math.floor(Math.random() * 7);
     eventsvalue.push(toxicity)
+    xValues.push(lastsentence)
+    graphsize++;
+    yValues.push(toxicity);
+    myChart.update();
+    ff=true;
   }
 
-  if(rising.includes(lastsaid)){
-    leadingevents.push(lastsentence)
+  else if(rising.includes(lastsaid)){
+    history.push(lastsentence)
     const toxicity = Math.floor(Math.random() * 7);
     eventsvalue.push(toxicity)
+    xValues.push(lastsentence)
+    graphsize++;
+    yValues.push(toxicity);
+    myChart.update();
+    ff=true;
   }
 
-  if(rising.includes(lastsentence)){
-    leadingevents.push(lastsentence)
+  else if(rising.includes(lastsentence)){
+    history.push(lastsentence)
     const toxicity = Math.floor(Math.random() * 7);
     eventsvalue.push(toxicity)
+    xValues.push(lastsentence)
+    graphsize++;
+    yValues.push(toxicity);
+    myChart.update();
+    ff=true;
   }
+
+  console.log(xValues)
 }
+
+/*
+const accountSid = 'AC25bd8b77a07f84c7443be0806ad1d857';
+const authToken = '1dc47d9a4d08b23b6811a5e2663081c5';
+
+const client = require('twilio')(accountSid, authToken);
+
+sendSMS()
+
+function sendSMS() {
+  client.messages
+    .create({
+       body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+       from: '+15017122661',
+       to: '+15558675310'
+     })
+    .then(message => console.log(message.sid));
+}
+*/
+
 
 function speechToText() {
   try {
@@ -246,8 +302,6 @@ recordBtn.addEventListener("click", () => {
     speechToText();
     recording = true;
   } else {
-    console.log(history)
-    console.log(historyvalue)
     stopRecording();
   }
 });

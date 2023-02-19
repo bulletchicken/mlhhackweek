@@ -1,6 +1,27 @@
 {
+  "type": "module",
   "dependencies": {
     "googleapis": "^111.0.0",
-    "openai": "^3.1.0"
-  }
+    "openai": "^3.1.0",
+    "pg": "^8.9.0",
+    "requirejs": "^2.3.6",
+    "twilio": "^4.7.2"
+  },
+  "name": "mlhhackweek",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bulletchicken/mlhhackweek.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bulletchicken/mlhhackweek/issues"
+  },
+  "homepage": "https://github.com/bulletchicken/mlhhackweek#readme",
+  "description": ""
 }
