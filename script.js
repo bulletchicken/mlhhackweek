@@ -1,6 +1,6 @@
 
 const openaiEndpoint = 'https://api.openai.com/v1/engines/davinci/completions';
-const openaiApiKey = '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';
+const openaiApiKey = '';
 const corsProxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 const openaiEndpointUrl = `${corsProxyUrl}${openaiEndpoint}`;
@@ -39,7 +39,7 @@ const toggleBtn = document.getElementById('toggle-btn');
 const container = document.querySelector('.container');
 
 const conflit = ["suck", "idiot", "ugly", "useless", "weak", "shut", "up", "asshole", "fucking"]
-const rising = ["not", "oh yeah", "shut", "what the hell is this", "are you kidding me?", "I can't believe"]
+const rising = ["not", "oh yeah", "what the hell is this", "are you kidding me?", "I can't believe"]
 let lastsaid = ""
 let lastsentence = ""
 
@@ -100,7 +100,7 @@ const myChart = new Chart("myChart", {
         }
       }
     },
-    legend: {display: true},
+    legend: {display: false},
     scales: {
       yAxes: [{ticks: {min: 0, max:10}}],
     }
@@ -119,6 +119,11 @@ const classificationParameters = {
 };
 */
 
+var angry4 = new Audio('voicelines/University of Toronto - Scarborough 4.m4a')
+var angry5 = new Audio('voicelines/University of Toronto - Scarborough 5.m4a')
+var angry6 = new Audio('voicelines/University of Toronto - Scarborough 6.m4a')
+var angry7 = new Audio('voicelines/University of Toronto - Scarborough 7.m4a')
+var angry9 = new Audio('voicelines/University of Toronto - Scarborough 9.m4a')
 function call(){
   fetch(openaiEndpoint, {
     method: 'POST',
@@ -167,9 +172,10 @@ function agro(){
   lastsaid = lastsaid.split(".").join("")
   console.log("The last sentence said" + lastsentence)
   console.log(conflit.includes(lastsaid));
+  let toxicity = 0;
   if(conflit.includes(lastsaid)){
     history.push(lastsentence)
-    const toxicity = Math.floor(Math.random() * 4) + 7;
+    toxicity = Math.floor(Math.random() * 4) + 7;
     historyvalue.push(toxicity)
     xValues.push(lastsentence)
     graphsize++;
@@ -181,7 +187,7 @@ function agro(){
 
   else if(lastsaid.slice(-1)=="?"){
     history.push(lastsentence)
-    const toxicity = Math.floor(Math.random() * 7);
+    toxicity = Math.floor(Math.random() * 7);
     eventsvalue.push(toxicity)
     xValues.push(lastsentence)
     graphsize++;
@@ -192,7 +198,7 @@ function agro(){
 
   else if(rising.includes(lastsaid)){
     history.push(lastsentence)
-    const toxicity = Math.floor(Math.random() * 7);
+    toxicity = Math.floor(Math.random() * 7);
     eventsvalue.push(toxicity)
     xValues.push(lastsentence)
     graphsize++;
@@ -203,13 +209,17 @@ function agro(){
 
   else if(rising.includes(lastsentence)){
     history.push(lastsentence)
-    const toxicity = Math.floor(Math.random() * 7);
+    toxicity = Math.floor(Math.random() * 7);
     eventsvalue.push(toxicity)
     xValues.push(lastsentence)
     graphsize++;
     yValues.push(toxicity);
     myChart.update();
     ff=true;
+  }
+
+  if(ff&&toxicity>7){
+    angry7.play();
   }
 
   console.log(xValues)

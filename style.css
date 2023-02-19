@@ -1,5 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
 
+html {
+  scroll-behavior: smooth;
+}
 :root {
   --primary-color: #356aff;
   --bg-color: #fff;
@@ -12,11 +15,6 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-}
-body {
-
-
-
 }
 #fakebody{
   min-height: 100vh;
@@ -45,11 +43,16 @@ body {
   background-size: 400% 400%;
   background-attachment: fixed;
   transition: background-color 0.5s ease;
+
+  font-family: "Comfortaa", sans-serif;
+  color:#fff;
+  font-size: 100px;
 }
 .background{
   background-color: black;
 }
 .container {
+  width:400px;
   padding: 20px;
   border-radius: 10px;
   background-color: var(--bg-color);
